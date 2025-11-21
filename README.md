@@ -25,6 +25,11 @@
 - Whitepaper claims (formulas are not final)
 - Smart contract configuration (wait for afi-math integration)
 
+**Visibility & Roadmap**:
+- Repository is currently **private** until canonical formulas are implemented
+- Canonical formulas will be added after Factory.ai droid pass + afi-math integration
+- Will transition to public once models are protocol-canonical
+
 See individual model files for detailed PLACEHOLDER warnings and TODOs.
 
 ---
