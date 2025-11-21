@@ -3,10 +3,13 @@
  * 
  * Models how rewards are distributed to validators based on performance.
  * 
+ * ⚠️  PLACEHOLDER IMPLEMENTATION - TOY MODEL FOR EXPERIMENTATION ONLY
+ * 
  * TODO: Implement actual validator performance metrics
  * TODO: Add stake-weighted distribution
  * TODO: Add slashing/penalty logic
  * TODO: Integrate with afi-core validator registry
+ * TODO: Replace random performance data with real metrics
  */
 
 import { SeededRNG } from '../../utils/rng.js';
@@ -52,10 +55,12 @@ export function simulateValidatorRewards(
     const validatorRewards: number[] = [];
 
     for (let i = 0; i < params.validatorCount; i++) {
-      // TODO: Replace with actual validator performance data
+      // PLACEHOLDER: Random performance and stake data
+      // TODO: Replace with actual validator performance data from afi-core
       const performance = rng.nextFloat(0.5, 1.0);
       const stake = rng.nextFloat(0.5, 1.0);
 
+      // PLACEHOLDER: Simple weighted formula
       // TODO: Replace with actual reward distribution formula
       const performanceScore = performance * params.performanceWeight;
       const stakeScore = stake * params.stakeWeight;
@@ -90,4 +95,3 @@ export function simulateValidatorRewards(
 
   return results;
 }
-

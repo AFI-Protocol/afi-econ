@@ -50,14 +50,19 @@ ENV/
 .venv
 pip-log.txt
 pip-delete-this-directory.txt
+
+# Jupyter Notebooks
 .ipynb_checkpoints
+*/.ipynb_checkpoints/*
+*.ipynb_checkpoints
 
 # Simulation outputs (keep sample data, ignore generated outputs)
 data/out/
+out/
+out_*/
 *.csv
 *.jsonl
 
 # OS
 .DS_Store
 Thumbs.db
-

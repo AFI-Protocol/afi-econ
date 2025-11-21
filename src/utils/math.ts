@@ -2,7 +2,15 @@
  * Math Utilities
  * 
  * Common mathematical functions for economic simulations.
- * For complex curves and decay functions, use afi-math package.
+ * 
+ * NOTE: For complex curves, decay functions, and time-value calculations,
+ * use the afi-math package instead. These utilities are for simple operations only.
+ * 
+ * TODO: Migrate complex math operations to afi-math when available:
+ *   - Exponential decay curves → afi-math
+ *   - Sigmoid/logistic curves → afi-math
+ *   - Time-value calculations → afi-math
+ *   - Advanced statistical functions → afi-math
  */
 
 /**
@@ -65,4 +73,3 @@ export function stdDev(values: number[]): number {
   const squareDiffs = values.map(v => Math.pow(v - avg, 2));
   return Math.sqrt(mean(squareDiffs));
 }
-

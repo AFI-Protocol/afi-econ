@@ -4,9 +4,12 @@
  * Models the rhythmic emissions pattern of AFI Protocol based on Epoch Pulse.
  * Epoch Pulse is the governance and emissions heartbeat of the protocol.
  * 
+ * ⚠️  PLACEHOLDER IMPLEMENTATION - TOY MODEL FOR EXPERIMENTATION ONLY
+ * 
  * TODO: Implement actual emissions curve logic
  * TODO: Integrate with afi-math for decay/curve calculations
  * TODO: Add validator participation weighting
+ * TODO: Replace sinusoidal pattern with real pulse curve
  */
 
 import { SeededRNG } from '../../utils/rng.js';
@@ -49,11 +52,12 @@ export function simulateEpochPulse(
   let cumulativeEmissions = 0;
 
   for (let epoch = startEpoch; epoch <= endEpoch; epoch++) {
-    // TODO: Replace with actual pulse curve calculation
-    // This is a placeholder using simple sinusoidal pattern
+    // PLACEHOLDER: Using simple sinusoidal pattern
+    // TODO: Replace with actual pulse curve calculation from afi-math
     const pulsePhase = (epoch % params.pulseFrequency) / params.pulseFrequency;
     const pulseFactor = 1 + (params.pulseAmplitude - 1) * Math.sin(pulsePhase * 2 * Math.PI);
     
+    // PLACEHOLDER: Using exponential decay
     // TODO: Replace with actual decay curve from afi-math
     const decayFactor = Math.pow(1 - params.decayRate, epoch - startEpoch);
     
@@ -81,4 +85,3 @@ export function simulateEpochPulse(
 
   return results;
 }
-

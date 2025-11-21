@@ -4,9 +4,12 @@
  * Models token minting based on signal volume and quality metrics.
  * Simpler than PoI model, focuses on signal throughput.
  * 
+ * ⚠️  PLACEHOLDER IMPLEMENTATION - TOY MODEL FOR EXPERIMENTATION ONLY
+ * 
  * TODO: Implement actual signal quality weighting
  * TODO: Add signal decay modeling
  * TODO: Integrate with afi-core signal lifecycle
+ * TODO: Replace random data with real signal metrics
  */
 
 import { SeededRNG } from '../../utils/rng.js';
@@ -47,11 +50,13 @@ export function simulateSignalMinting(
   let cumulativeSupply = 0;
 
   for (let epoch = startEpoch; epoch <= endEpoch; epoch++) {
-    // TODO: Replace with actual signal data
+    // PLACEHOLDER: Random signal data
+    // TODO: Replace with actual signal data from afi-core
     const signalVolume = rng.nextInt(20, 100);
     const avgQuality = rng.nextFloat(0.5, 1.0);
 
-    // TODO: Replace with actual minting formula
+    // PLACEHOLDER: Simple weighted formula
+    // TODO: Replace with actual minting formula from afi-math
     const volumeFactor = signalVolume * params.volumeWeight;
     const qualityFactor = avgQuality * params.qualityWeight;
     const tokensMinted = params.tokensPerSignal * (volumeFactor + qualityFactor);
@@ -80,4 +85,3 @@ export function simulateSignalMinting(
 
   return results;
 }
-

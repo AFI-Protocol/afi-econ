@@ -4,10 +4,13 @@
  * Models how agent reputation scores evolve over time based on performance.
  * Includes reputation decay and recovery mechanics.
  * 
+ * ⚠️  PLACEHOLDER IMPLEMENTATION - TOY MODEL FOR EXPERIMENTATION ONLY
+ * 
  * TODO: Implement actual reputation scoring logic
- * TODO: Add reputation decay curves
+ * TODO: Add reputation decay curves from afi-math
  * TODO: Add slashing/recovery mechanics
  * TODO: Integrate with afi-core agent registry
+ * TODO: Replace random performance data with real metrics
  */
 
 import { SeededRNG } from '../../utils/rng.js';
@@ -55,10 +58,12 @@ export function simulateAgentReputation(
   for (let epoch = startEpoch; epoch <= endEpoch; epoch++) {
     // Update each agent's reputation
     for (let i = 0; i < params.agentCount; i++) {
-      // TODO: Replace with actual performance data
+      // PLACEHOLDER: Random performance data
+      // TODO: Replace with actual performance data from afi-core
       const performance = rng.nextFloat(-1, 1); // -1 to 1 (bad to good)
 
-      // TODO: Replace with actual reputation update formula
+      // PLACEHOLDER: Simple decay + performance formula
+      // TODO: Replace with actual reputation update formula from afi-math
       const decayFactor = 1 - params.decayRate;
       const performanceAdjustment = performance * params.performanceImpact;
       
@@ -97,4 +102,3 @@ export function simulateAgentReputation(
 
   return results;
 }
-
