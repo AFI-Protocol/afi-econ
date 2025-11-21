@@ -6,6 +6,29 @@
 
 ---
 
+## ⚠️ Status: Research-Grade / Placeholder Models
+
+**Current State (v0.1.0)**:
+- ✅ **Deterministic simulation framework** - Seeded RNG, config-driven, reproducible outputs
+- ✅ **TypeScript + Python dual stack** - CLI tools and Jupyter notebooks
+- ⚠️ **Economic models are PLACEHOLDER / toy implementations** - Simple formulas for experimentation only
+- ⚠️ **Not protocol-canonical yet** - Models use sinusoidal pulses, linear curves, random data
+- 🔜 **Future work**: Integration with afi-math for real decay curves, time-value calculations, and production-grade formulas
+
+**Use this toolkit for**:
+- Exploring economic scenarios and parameter sensitivity
+- Prototyping new economic mechanisms
+- Generating reproducible simulation data for research
+
+**Do NOT use for**:
+- Production parameter decisions (models are placeholders)
+- Whitepaper claims (formulas are not final)
+- Smart contract configuration (wait for afi-math integration)
+
+See individual model files for detailed PLACEHOLDER warnings and TODOs.
+
+---
+
 ## Purpose
 
 This repository provides:
@@ -16,6 +39,9 @@ This repository provides:
 - **Signal Economy Simulations**: Signal valuation, decay, and lifecycle economics
 - **Deterministic Replayable Sims**: Seeded RNG for audits, regression testing, and reproducibility
 - **Config-Driven Experiments**: JSON-based configuration for rapid iteration
+- **Chart-Ready Outputs**: JSON/CSV exports designed to feed AFI Whitepaper charts and Notion summaries
+
+---
 - **Chart-Ready Outputs**: JSON/CSV exports designed to feed AFI Whitepaper charts and Notion summaries
 
 ---
