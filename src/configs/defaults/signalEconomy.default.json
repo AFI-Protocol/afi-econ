@@ -1,0 +1,15 @@
+{
+  "seed": 42,
+  "startEpoch": 0,
+  "endEpoch": 50,
+  "params": {
+    "tokensPerSignal": 5,
+    "qualityWeight": 0.7,
+    "volumeWeight": 0.3
+  },
+  "output": {
+    "format": "both",
+    "path": "signal-economy-simulation.json"
+  }
+}
+

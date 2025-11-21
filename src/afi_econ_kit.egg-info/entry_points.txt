@@ -1,0 +1,2 @@
+[console_scripts]
+afi-econ-kit = afi_econ_kit.cli:main

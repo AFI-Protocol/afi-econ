@@ -1,0 +1,58 @@
+[
+  {
+    "participant_id": "user_001",
+    "role": "reputation",
+    "region": "north_america",
+    "amount": 100.0,
+    "timestamp": "2024-01-01T12:00:00Z"
+  },
+  {
+    "participant_id": "user_002",
+    "role": "poi",
+    "region": "europe",
+    "amount": 150.0,
+    "timestamp": "2024-01-01T12:05:00Z"
+  },
+  {
+    "participant_id": "user_003",
+    "role": "poinsight",
+    "region": "asia",
+    "amount": 200.0,
+    "timestamp": "2024-01-01T12:10:00Z"
+  },
+  {
+    "participant_id": "user_001",
+    "role": "reputation",
+    "region": "north_america",
+    "amount": 75.0,
+    "timestamp": "2024-01-01T12:15:00Z"
+  },
+  {
+    "participant_id": "user_004",
+    "role": "poi",
+    "region": "south_america",
+    "amount": 120.0,
+    "timestamp": "2024-01-01T12:20:00Z"
+  },
+  {
+    "participant_id": "user_005",
+    "role": "reputation",
+    "region": "africa",
+    "amount": 90.0,
+    "timestamp": "2024-01-01T12:25:00Z"
+  },
+  {
+    "participant_id": "user_006",
+    "role": "poinsight",
+    "region": "oceania",
+    "amount": 180.0,
+    "timestamp": "2024-01-01T12:30:00Z"
+  },
+  {
+    "participant_id": "user_002",
+    "role": "poi",
+    "region": "europe",
+    "amount": 110.0,
+    "timestamp": "2024-01-01T12:35:00Z"
+  }
+]

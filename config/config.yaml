@@ -1,0 +1,25 @@
+epochs_per_year: 52
+cap: 1000000000
+start_date: null  # ISO date string, optional
+baseline:
+  kind: geometric  # geometric | exponential
+  B0: 1000000
+  r: 0.999
+  k: null
+  epochs: null  # optional explicit schedule length
+aim:
+  enabled: false
+  alpha: 0.5
+  beta: 0.3
+  gamma: 0.2
+  I_star: 1.0
+  kappa: 0.05
+  lambda: 0.1
+  amin: 0.98
+  amax: 1.02
+plotting:
+  dpi: 200
+  figsize_single: [8, 4]
+  figsize_wide: [10, 4]
+output:
+  precision: 6

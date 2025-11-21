@@ -1,0 +1,36 @@
+{
+  "repo": "afi-econ-kit",
+  "purpose": "Economic modeling and simulation toolkit for AFI Protocol",
+  "primaryEntrypoints": [
+    "src/cli/afi-econ.ts",
+    "src/models/emissions/epochPulseModel.ts",
+    "src/models/minting/poiMintModel.ts",
+    "src/models/minting/signalMintModel.ts",
+    "src/models/rewards/validatorRewardModel.ts",
+    "src/models/rewards/agentReputationModel.ts"
+  ],
+  "droidGuidelines": [
+    "This is a research/tooling repo, not production logic",
+    "All simulations must be deterministic (use seeded RNG from utils/rng.ts)",
+    "All simulations must be config-driven (read from JSON configs)",
+    "Do NOT implement full economic models unless explicitly asked",
+    "Keep stubs minimal and clearly marked with TODO comments",
+    "Outputs should be JSON/CSV for charting and analysis",
+    "Do NOT duplicate logic from afi-core, afi-token-finalized, or afi-engine",
+    "Use the term 'Epoch Pulse' (not 'Harmony Pulse')",
+    "Favor TypeScript ESM patterns (module: ESNext)",
+    "Python notebooks are for experimentation only, not production"
+  ],
+  "relatedRepos": {
+    "afi-token-finalized": "Smart contracts - afi-econ models inform contract parameters",
+    "afi-core": "Protocol interfaces - afi-econ simulates economic outcomes",
+    "afi-engine": "Signal processing - afi-econ models signal flow economics",
+    "afi-math": "Pure math functions - afi-econ uses for calculations"
+  },
+  "commonTasks": {
+    "addNewSimulation": "Create model in src/models/, add command in src/cli/commands/, add default config in src/configs/defaults/",
+    "runSimulation": "yarn cli <command> --config <path>",
+    "addPythonNotebook": "Create .ipynb in python/notebooks/, mirror TS model logic in python/sims/"
+  }
+}
+

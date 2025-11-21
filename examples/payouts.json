@@ -1,0 +1,38 @@
+[
+  {
+    "participant_id": "user_001",
+    "role": "reputation",
+    "amount": 250.0,
+    "epoch": 1
+  },
+  {
+    "participant_id": "user_002",
+    "role": "poi",
+    "amount": 300.0,
+    "epoch": 1
+  },
+  {
+    "participant_id": "user_003",
+    "role": "poinsight",
+    "amount": 350.0,
+    "epoch": 1
+  },
+  {
+    "participant_id": "user_004",
+    "role": "poi",
+    "amount": 200.0,
+    "epoch": 1
+  },
+  {
+    "participant_id": "user_005",
+    "role": "reputation",
+    "amount": 180.0,
+    "epoch": 1
+  },
+  {
+    "participant_id": "user_006",
+    "role": "poinsight",
+    "amount": 320.0,
+    "epoch": 1
+  }
+]

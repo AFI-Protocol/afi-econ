@@ -1,0 +1,43 @@
+{
+  "stamp": {
+    "timestamp": "2025-10-05T17:22:36.885207+00:00",
+    "git_short_hash": "n/a",
+    "seed": 1337,
+    "data_hash": "mc_1337_64",
+    "version": "0.1.0",
+    "git_sha_short": "n/a",
+    "utc_ts": "2025-10-05T17:22:36.920481+00:00",
+    "config_hash": "5dbfe76285c659439bcb8a7628dd646ba56079d47a9a958b3f08d2a6343b9ef8",
+    "params_hash": "1f7c145b1cafbcf3477f92e1e2d41dcfd9bfc2e06d8ea59ab74da2e1b29b1d82",
+    "rng_seed_used": 1337,
+    "scores_path": "/Users/secretservice/afi-benchkit/out/scores.json",
+    "scores_hash": "7372c882873aeaa82753dcf0b8fdc5e4a6e9fb2a5d1db55a8e60500e835a3560",
+    "benchkit_stamp": {
+      "cfg_hash": null,
+      "data_hash": "18e9c234f2ee33be2e4a4bc4680ab1dbbc68bde23e25fe4eed6a8bfe68384307",
+      "git_sha": "9eb3a14ffb6c1eb8cc6c669424ec0fd6d27631f9",
+      "utc_ts": "2025-10-04T16:34:39Z"
+    },
+    "bench_merit": {
+      "reputation": 0.5455885659232473,
+      "poi": 0.5516229932966229,
+      "poinsight": 0.5430023827632293
+    },
+    "budget_path": "/Users/secretservice/afi-emissions/out_emit/epoch_budget.json",
+    "budget_hash": "2017534d57f93a545ba2f37e9c3315a8cf13fda398b35df6b1ee4db262b30b26",
+    "budget_stamp": {
+      "version": "0.1.0",
+      "git_sha": "n/a",
+      "utc_ts": "2025-10-05T02:57:34.624683+00:00",
+      "config_hash": "c13c4a8ecffe04d71f5d71f1d36ea214d395b96c35a740b48c90273595efdf34"
+    },
+    "budget_epoch": 25
+  },
+  "summary": {
+    "total_epochs": 64,
+    "total_breaker_events": 0,
+    "final_budget": 1000000.0,
+    "avg_pool_utilization": 1.0
+  },
+  "config_hash": -1364694410363294296
+}

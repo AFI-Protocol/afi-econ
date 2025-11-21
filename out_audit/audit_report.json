@@ -1,0 +1,31 @@
+{
+  "benchkit_influence_ok": true,
+  "deltas": {
+    "enrichment": 0.002034,
+    "producers": 0.004211,
+    "public_goods": -0.007347,
+    "validators": 0.001101
+  },
+  "determinism_ok": true,
+  "emissions_invariants_ok": true,
+  "gauge_invariants_ok": true,
+  "hashes": {
+    "emissions_series_sha256": "6a6e60fd268a364071ea65a5d765bd846af001a3a7ec5efc0623f2d01e384b1a"
+  },
+  "paths": {
+    "budget": "/Users/secretservice/afi-emissions/out_emit/epoch_budget.json",
+    "econ_base_dir": "/Users/secretservice/afi-econ-kit/out_base",
+    "econ_with_dir": "/Users/secretservice/afi-econ-kit/out_with",
+    "scores": "/Users/secretservice/afi-benchkit/out/scores.json"
+  },
+  "payouts_conservation_ok": true,
+  "provenance_ok": true,
+  "stability_ok": true,
+  "summary": {
+    "failed": 0,
+    "na": 0,
+    "passed": 7,
+    "total_checks": 7
+  },
+  "timestamp": "2025-10-05T17:22:19.592104+00:00"
+}

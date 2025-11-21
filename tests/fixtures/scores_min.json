@@ -1,0 +1,7 @@
+{
+  "poi": {"score": 0.55},
+  "poinsight": {"score": 0.60},
+  "reputation": {"score": 0.58},
+  "n": 20,
+  "n_detail": {"poi": 10, "poinsight": 10}
+}

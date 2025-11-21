@@ -1,0 +1,46 @@
+timeseries_csv: "./data/timeseries_rebuilt.csv"
+scenarios_csv: "./data/scenarios_mc30k.csv"
+index_csv: "./data/afi_index_illustrative.csv"
+output_dir: "./figures"
+columns:
+  epoch: "epoch"
+  emission: "E_t"
+  aim: "aim"
+  cum_supply: "minted"
+  cum_fraction: "cum_frac"
+  baseline_cum: "cum_base"
+  year: "year"
+  scenario: "scenario_id"
+  scenario_emissions: "emissions"
+
+# Economic Pipeline Configuration
+budget:
+  baseline: 1_000_000.0
+  aim_enabled: false
+  aim_params:
+    k: 0.0
+
+gauge:
+  weights:
+    producers: 0.55
+    enrichment: 0.25
+    validators: 0.10
+    public_goods: 0.10
+  caps:
+    per_role_max: 0.60
+  policy_merit_blend: 0.5   # 50/50 policy vs. merit
+  version: "v0"
+
+safety:
+  budget_rate_limit: 0.20
+  weight_rate_limit: 0.15
+  smoothing_alpha: 0.25
+  breaker:
+    dispute_rate_limit: 0.08
+
+payouts:
+  maturity_hold_frac: 0.15
+
+monte_carlo:
+  runs: 64
+  seed: 1337

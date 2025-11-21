@@ -1,0 +1,381 @@
+Metadata-Version: 2.4
+Name: afi-econ-kit
+Version: 0.1.0
+Summary: AFI economic model reproducibility toolkit
+Author: AFI
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas>=2.0
+Requires-Dist: numpy>=1.24
+Requires-Dist: matplotlib>=3.7
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: click>=8.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4; extra == "dev"
+Dynamic: license-file
+
+# AFI Econ Kit
+
+**AFI Economic System Implementation** - A comprehensive toolkit for simulating and analyzing the AFI Protocol's economic mechanisms.
+
+## Overview
+
+The AFI Econ Kit provides a complete implementation of the AFI Protocol's economic system, including:
+
+- **Allocation Gauge System**: Policy-based and merit-based allocation mechanisms
+- **Safety & Smoothing**: Temporal smoothing and safety caps for stable payouts
+- **Budget Integration**: Consumption of AFI emissions budget data from afi-emissions
+- **AFI Index Computation**: Multi-component index (AN_t, EG_t, Cov_t) for network health
+- **Anti-Gaming Mechanisms**: Light anti-gaming helpers (Sybil detection, wash trading)
+- **Monte Carlo Simulation**: Statistical analysis with deterministic reproducibility
+- **BenchKit Integration**: Merit-based allocation using benchmark reputation scores
+- **Stage-by-Stage Processing**: Individual CLI commands for gauge, safety, payouts stages
+- **Comprehensive Testing**: Golden image tests for plot reproducibility
+- **Docker Capsule**: Multi-stage builds with STRICT=1 (hash verification) and STRICT=0 (dev) modes
+
+## End-to-End Whitepaper Pipeline
+
+The AFI Econ Kit is part of a complete whitepaper-ready pipeline:
+
+```
+afi-emissions → afi-benchkit → afi-econ-kit
+     ↓              ↓              ↓
+ epoch_budget   scores.json    final_payouts
+     ↓              ↓              ↓
+   E_t=132      merit_scores   afi_index.json
+```
+
+### Pipeline Flow
+
+1. **AFI Emissions** (`afi-emissions`): Computes epoch pool E_t using baseline + AIM
+2. **AFI BenchKit** (`afi-benchkit`): Generates merit scores from benchmark performance
+3. **AFI Econ Kit** (`afi-econ-kit`): Combines policy + merit → gauge → safety → payouts → index
+
+### Integration Example
+
+```bash
+# Step 1: Generate epoch budget (afi-emissions)
+afi-emissions emit --config params/emissions_v0.yaml --epoch 208 --out budget_out
+# → budget_out/epoch_budget.json
+
+# Step 2: Generate merit scores (afi-benchkit)
+afi-benchkit reputation --config config.yaml --out scores_out
+# → scores_out/scores.json
+
+# Step 3: Run economic simulation (afi-econ-kit)
+afi-econ-kit simulate --config config.yaml --outdir econ_out \
+  --budget budget_out/epoch_budget.json --scores scores_out/scores.json
+# → econ_out/econ_summary.json, econ_out/gauge_shares.png, etc.
+
+# Step 4: Compute AFI Index
+afi-econ-kit index --receipts examples/receipts.json \
+  --payouts econ_out/final_payouts.json --epoch 208 --outdir index_out
+# → index_out/afi_index.json, index_out/afi_index.png
+```
+
+## Quickstart
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -U pip
+pip install -e .[dev]
+```
+
+### Original Commands
+With the provided `config.yaml` (which points to `./data/*.csv`) you can run:
+
+```bash
+afi-econ-kit check --config config.yaml
+afi-econ-kit plot --config config.yaml
+afi-econ-kit plot-index --config config.yaml
+afi-econ-kit plot-scenarios --config config.yaml
+afi-econ-kit summarize-scenarios --config config.yaml
+```
+
+### Core Economic Pipeline Commands
+
+```bash
+# Full Monte Carlo economic simulation
+afi-econ-kit simulate --config config.yaml --outdir out \
+  --budget epoch_budget.json --scores scores.json
+
+# Single epoch replay with provided data
+afi-econ-kit replay --config config.yaml --receipts receipts.csv \
+  --credits credits.csv --prev-state state.json --outdir out
+
+# AFI Index computation
+afi-econ-kit index --receipts receipts.json --payouts payouts.json \
+  --epoch 208 --outdir index_out
+```
+
+### Stage-by-Stage Processing Commands
+
+```bash
+# Run individual pipeline stages
+afi-econ-kit gauge --receipts receipts.json --scores scores.json \
+  --config params/gauge_v0.yaml --outdir gauge_out
+
+afi-econ-kit safety --allocations gauge_out/gauge_allocations.json \
+  --prev-allocations prev_allocations.json --outdir safety_out
+
+afi-econ-kit payouts --allocations safety_out/safety_allocations.json \
+  --budget epoch_budget.json --outdir payouts_out
+```
+
+## What each command does
+
+### Original Commands
+- `check` &mdash; validates that required files exist, resolves column mappings, and runs monotonic supply / AIM sanity checks.
+- `plot` &mdash; generates timeseries figures in `./figures`:
+  - `emissions_by_epoch.png`
+  - `cumulative_supply.png`
+  - `cumulative_fraction.png` (only if `cum_frac` column present)
+  - `baseline_vs_actual_cum.png` (only if both baseline and minted columns exist)
+- `plot-index` &mdash; emits `index_components.png` and `index_series.png` when the index CSV is available (computes a composite if `I_t` is absent).
+- `plot-scenarios` &mdash; builds `scenario_distributions.png` and `scenario_totals.png` from the summary statistics in `scenarios_mc30k.csv`.
+- `summarize-scenarios` &mdash; prints and saves (`./figures/scenarios_summary.md`) a Markdown table with count/mean/std/min/p10/p50/p90/max for every available scenario metric.
+
+### Core Economic Pipeline Commands
+
+- **`simulate`** &mdash; Full Monte Carlo economic simulation producing:
+  - `econ_summary.json` - Complete economic summary with provenance
+  - `gauge_shares.png` - Allocation gauge visualization
+  - `safety_smoothing.png` - Safety mechanism visualization
+  - `payout_distribution.png` - Final payout distribution
+  - `monte_carlo_stats.json` - Statistical analysis results
+
+- **`replay`** &mdash; Single epoch replay with provided input data producing:
+  - `replay_summary.json` - Epoch replay results
+  - `replay_allocations.json` - Computed allocations
+  - Same visualization outputs as simulate
+
+- **`index`** &mdash; AFI Index computation producing:
+  - `afi_index.json` - Index components and final I_t value
+  - `afi_index.png` - Index visualization with components
+
+### Stage-by-Stage Commands
+
+- **`gauge`** &mdash; Allocation gauge stage producing:
+  - `gauge_allocations.json` - Policy + merit blended allocations
+
+- **`safety`** &mdash; Safety smoothing stage producing:
+  - `safety_allocations.json` - Smoothed and capped allocations
+
+- **`payouts`** &mdash; Final payouts stage producing:
+  - `final_payouts.json` - Final payout amounts per participant
+
+### Anti-Gaming & Analysis
+
+The toolkit includes light anti-gaming mechanisms (disabled by default):
+- **Sybil Detection**: Behavioral similarity clustering
+- **Wash Trading Detection**: Round-trip transaction pattern analysis
+- **Penalty Application**: Configurable penalty rates for flagged behavior
+
+### Docker Capsule Usage
+
+```bash
+# Development mode (STRICT=0)
+docker run --rm -v $(pwd):/work ghcr.io/afi-protocol/afi-econ-kit:stable \
+  simulate --config config.yaml --outdir docker_out
+
+# Production mode with hash verification (STRICT=1)
+docker run --rm -v $(pwd):/work ghcr.io/afi-protocol/afi-econ-kit:stable-strict \
+  simulate --config config.yaml --outdir docker_out
+```
+  - `econ_pool_series.csv` - budget pool evolution per epoch (includes convenience columns)
+  - `econ_gauge_series.csv` - allocation gauge shares per epoch
+  - `econ_payouts_summary.csv` - payout summaries per epoch
+  - `econ_summary.json` - overall simulation summary with reproducibility stamp
+  - `econ_budget.png` - budget evolution plot
+  - `econ_gauge_shares.png` - gauge share evolution plot
+  - `econ_breakers.png` - circuit breaker events plot
+
+### econ_pool_series.csv: convenience columns
+
+We include two helper columns in `econ_pool_series.csv`:
+
+- `emission`: effective per-epoch increments (includes multipliers when present).
+- `cum_supply`: a guardrailed cumulative (monotone non-decreasing) derived from `emission`.
+
+Quick sanity check:
+
+    python - <<'PY'
+    import numpy as np, pandas as pd
+    ts = pd.read_csv("out/econ_pool_series.csv")
+    incr = pd.to_numeric(ts["emission"], errors="coerce").fillna(0.0).clip(lower=0.0)
+    cum  = incr.cumsum().to_numpy()
+    print("violations:", (np.diff(cum) < -1e-9).sum())
+    PY
+- `replay` &mdash; deterministic single-epoch replay producing:
+  - `state_next.json` - next epoch state after safety controls
+  - `payouts_epoch.csv` - detailed payouts for the epoch
+
+Each figure contains a small footer of the form `afi-econ-kit | git:<short> cfg:<hash> | <UTC timestamp>` so the provenance of every plot is explicit.
+
+## Configuration Overview
+
+The `config.yaml` file now contains both original timeseries configuration and new economic pipeline parameters:
+
+### Original Configuration
+- `timeseries_csv`, `scenarios_csv`, `index_csv` - data file paths
+- `columns` - logical-to-physical column mappings (tolerant to synonyms like `aim`, `AIM_t`, `mult_aim`)
+
+### Economic Pipeline Configuration
+- `budget` - baseline budget and AIM (Adaptive Issuance Mechanism) settings
+- `gauge` - allocation weights, caps, and policy/merit blending parameters
+- `safety` - rate limits, smoothing factors, and circuit breaker thresholds
+- `payouts` - maturity holdback fractions
+- `monte_carlo` - simulation runs and random seed for reproducibility
+
+Versioned gauge parameters are stored in `params/gauge_v0.yaml` for parameter management.
+
+## Development Lanes
+
+### Prebuilt Container (Recommended)
+```bash
+# Use exact dependency pins for reproducible builds
+pip install -r requirements.txt
+```
+
+### Development Lane
+```bash
+pip install -e .[dev]
+```
+
+### Strict Lane
+```bash
+# For CI/production with exact versions
+pip install -r requirements.txt
+pytest -q
+```
+
+## From Benchmarks to Budgets
+
+The complete end-to-end workflow integrates BenchKit reputation scores into the economic pipeline:
+
+### Step 1: Generate BenchKit Scores
+```bash
+# (From afi-benchkit repository)
+cd ../afi-benchkit
+afi-benchkit run --config benchkit_config.yaml --outdir out
+# This produces out/scores.json with PoI, PoInsight, and Reputation scores
+```
+
+### Step 2: Run Economic Simulation with BenchKit Integration
+```bash
+# (In afi-econ-kit repository)
+afi-econ-kit simulate --config config.yaml --outdir out --scores ../afi-benchkit/out/scores.json
+```
+
+This command will:
+- Echo the absolute path to the scores file
+- Print a summary: `Using BenchKit scores: rep=0.546, poi=0.552, poinsight=0.543 (n=21)`
+- Apply BenchKit merit multipliers to gauge allocation:
+  - **Producers**: 70% PoInsight + 30% Reputation (benefits from high insight scores)
+  - **Validators**: 100% Reputation (pure reputation-based allocation)
+  - **Enrichment**: 60% PoInsight + 40% Reputation (mixed insight/reputation)
+  - **Public Goods**: Neutral (unaffected by BenchKit scores)
+
+### Step 3: Inspect Results
+```bash
+# View gauge share evolution with BenchKit influence
+open out/econ_gauge_shares.png
+
+# Check comprehensive provenance in summary
+cat out/econ_summary.json | jq '.stamp'
+```
+
+The `econ_summary.json` now includes comprehensive provenance:
+- `version`: Package version from metadata
+- `git_sha_short`: Git commit (first 7 chars)
+- `utc_ts`: ISO8601 UTC timestamp
+- `config_hash`: SHA256 of config.yaml
+- `params_hash`: SHA256 of params/gauge_v0.yaml
+- `scores_path`: Absolute path to BenchKit scores file
+- `scores_hash`: SHA256 of BenchKit scores file (64-hex string)
+- `benchkit_stamp`: Pass-through BenchKit stamp object (or null)
+- `bench_merit`: The actual scores used (reputation, poi, poinsight)
+
+Example provenance with BenchKit integration:
+```json
+{
+  "scores_path": "/abs/path/to/scores.json",
+  "scores_hash": "abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
+  "benchkit_stamp": {
+    "timestamp": "2024-01-01T12:00:00Z",
+    "version": "1.0.0",
+    "config_hash": "..."
+  }
+}
+```
+
+### Verifying Configuration Integrity
+```bash
+# Verify config hash matches current file
+python -c "
+import hashlib, json
+with open('out/econ_summary.json') as f: stamp = json.load(f)['stamp']
+with open('config.yaml', 'rb') as f: current_hash = hashlib.sha256(f.read()).hexdigest()
+print('Config hash matches:', stamp['config_hash'] == current_hash)
+"
+```
+
+## Reproduce the Paper
+
+Generate the economic assets used in the whitepaper:
+
+```bash
+make paper-assets
+```
+
+This creates `examples/whitepaper/econ/` with:
+- `econ_budget.png` - budget evolution figure
+- `econ_gauge_shares.png` - allocation gauge shares
+- `econ_summary.json` - simulation summary
+- `METADATA.txt` - reproducibility metadata
+
+## Testing
+Comprehensive test suite including golden image tests:
+```bash
+pytest -q                           # Run all tests (should complete in <5s)
+AFI_ECON_GOLDEN_TEST=1 pytest      # Run with deterministic plotting
+AFI_ECON_REGEN_GOLDEN=1 pytest     # Regenerate golden image hashes
+```
+
+### Golden Test Policy
+The golden image tests enforce byte-stable plot reproducibility with different behavior for local vs CI:
+
+**Local Development** (forgiving):
+```bash
+make golden  # Prints digest, assertion skipped
+```
+
+**CI / Strict Local** (enforcing):
+```bash
+make golden-ci  # Enforces hash assertion
+```
+
+### Regenerating Golden Tests
+To regenerate golden hashes for plot reproducibility:
+```bash
+# Regenerate budget plot golden hash
+AFI_ECON_REGEN_GOLDEN=1 pytest -q tests/test_budget_golden.py -s
+
+# Regenerate gauge shares plot golden hash
+AFI_ECON_KIT_REGEN_GOLDEN=1 pytest -q tests/test_gauge_shares_golden.py -s
+```
+Copy the printed hash into the respective test file's `GOLDEN_HASH` constant.
+
+## Makefile Targets
+- `make simulate` - run economic simulation with default config
+- `make sim` - run simulation with BenchKit integration (if available)
+- `make replay` - run single epoch replay (requires input files)
+- `make golden` - run golden image tests (local mode - prints digest, assertion skipped)
+- `make golden-ci` - run golden image tests (CI enforcement mode - strict assertions)
+- `make paper-assets` - generate whitepaper economic assets
+- `make clean` - remove output files
+- `make spotless` - remove all generated files including virtual env
+
+## License
+MIT License. See `LICENSE` for details.

@@ -1,0 +1,16 @@
+{
+  "seed": 42,
+  "startEpoch": 0,
+  "endEpoch": 100,
+  "params": {
+    "baseEmissions": 1000,
+    "pulseFrequency": 10,
+    "pulseAmplitude": 1.5,
+    "decayRate": 0.01
+  },
+  "output": {
+    "format": "both",
+    "path": "epoch-pulse-simulation.json"
+  }
+}
+

@@ -1,0 +1,16 @@
+{
+  "seed": 42,
+  "startEpoch": 0,
+  "endEpoch": 50,
+  "params": {
+    "rewardPoolPerEpoch": 1000,
+    "validatorCount": 10,
+    "performanceWeight": 0.6,
+    "stakeWeight": 0.4
+  },
+  "output": {
+    "format": "both",
+    "path": "validator-rewards-simulation.json"
+  }
+}
+

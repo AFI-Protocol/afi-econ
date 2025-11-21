@@ -1,0 +1,14 @@
+# Example column mapping from user-provided CSV headers to canonical AFI fields.
+# Users can override these keys to match their datasets.
+# Canonical fields: epoch, signal_id, conf, novelty, attrib_share,
+# notional, delta_cost, venue_notional_total, reliability
+mappings:
+  epoch_id: epoch
+  signal: signal_id
+  confidence: conf
+  novelty_score: novelty
+  attribution: attrib_share
+  executed_notional: notional
+  delta_execution_cost: delta_cost
+  venue_notional: venue_notional_total
+  reliability_factor: reliability

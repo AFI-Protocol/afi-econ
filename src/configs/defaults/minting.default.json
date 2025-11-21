@@ -1,0 +1,16 @@
+{
+  "seed": 42,
+  "startEpoch": 0,
+  "endEpoch": 50,
+  "params": {
+    "baseMintPerSignal": 10,
+    "minInsightScore": 50,
+    "maxMultiplier": 2.0,
+    "supplyCap": 1000000
+  },
+  "output": {
+    "format": "both",
+    "path": "poi-minting-simulation.json"
+  }
+}
+

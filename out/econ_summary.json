@@ -1,0 +1,29 @@
+{
+  "stamp": {
+    "timestamp": "2025-10-05T00:38:01.146950+00:00",
+    "git_short_hash": "n/a",
+    "seed": 1337,
+    "data_hash": "mc_1337_64",
+    "version": "0.1.0",
+    "git_sha_short": "n/a",
+    "utc_ts": "2025-10-05T00:38:01.199829+00:00",
+    "config_hash": "5dbfe76285c659439bcb8a7628dd646ba56079d47a9a958b3f08d2a6343b9ef8",
+    "params_hash": "1f7c145b1cafbcf3477f92e1e2d41dcfd9bfc2e06d8ea59ab74da2e1b29b1d82",
+    "rng_seed_used": 1337,
+    "scores_path": null,
+    "scores_hash": null,
+    "benchkit_stamp": null,
+    "bench_merit": null,
+    "budget_path": null,
+    "budget_hash": null,
+    "budget_stamp": null,
+    "budget_epoch": null
+  },
+  "summary": {
+    "total_epochs": 64,
+    "total_breaker_events": 0,
+    "final_budget": 1000000.0,
+    "avg_pool_utilization": 1.0
+  },
+  "config_hash": -126590584610477770
+}

@@ -1,0 +1,27 @@
+# Gauge Parameters v0
+# This file mirrors the gauge section from config.yaml for versioned parameter management
+
+weights:
+  producers: 0.55
+  enrichment: 0.25
+  validators: 0.10
+  public_goods: 0.10
+
+caps:
+  per_role_max: 0.60
+
+policy_merit_blend: 0.5   # 50/50 policy vs. merit
+
+# BenchKit merit weights for role mapping
+bench_merit_weights:
+  producers:
+    poinsight: 0.7
+    reputation: 0.3
+  validators:
+    reputation: 1.0
+  enrichment:
+    poinsight: 0.6
+    reputation: 0.4
+  public_goods: 0.5  # neutral/unaffected
+
+version: "v0"
