@@ -1,5 +1,5 @@
 {
-  "repo": "afi-econ-kit",
+  "repo": "afi-econ",
   "purpose": "Economic modeling and simulation toolkit for AFI Protocol",
   "primaryEntrypoints": [
     "src/cli/afi-econ.ts",
@@ -16,15 +16,15 @@
     "Do NOT implement full economic models unless explicitly asked",
     "Keep stubs minimal and clearly marked with TODO comments",
     "Outputs should be JSON/CSV for charting and analysis",
-    "Do NOT duplicate logic from afi-core, afi-token-finalized, or afi-engine",
+    "Do NOT duplicate logic from afi-core, afi-token, or afi-reactor",
     "Use the term 'Epoch Pulse' (not 'Harmony Pulse')",
     "Favor TypeScript ESM patterns (module: ESNext)",
     "Python notebooks are for experimentation only, not production"
   ],
   "relatedRepos": {
-    "afi-token-finalized": "Smart contracts - afi-econ models inform contract parameters",
+    "afi-token": "Smart contracts - afi-econ models inform contract parameters",
     "afi-core": "Protocol interfaces - afi-econ simulates economic outcomes",
-    "afi-engine": "Signal processing - afi-econ models signal flow economics",
+    "afi-reactor": "Signal processing - afi-econ models signal flow economics",
     "afi-math": "Pure math functions - afi-econ uses for calculations"
   },
   "commonTasks": {

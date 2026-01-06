@@ -1,8 +1,8 @@
-# afi-econ-kit
+# afi-econ
 
 **Economic Modeling & Simulation Toolkit for AFI Protocol**
 
-`afi-econ-kit` (nickname: **afi-econ**) is the research and tooling repository for economic modeling, simulation, and scenario analysis for the AFI Protocol. This kit enables deterministic, config-driven experiments for token emissions, validator rewards, signal economics, and governance rhythms.
+`afi-econ` (nickname: **afi-econ**) is the research and tooling repository for economic modeling, simulation, and scenario analysis for the AFI Protocol. This kit enables deterministic, config-driven experiments for token emissions, validator rewards, signal economics, and governance rhythms.
 
 ---
 
@@ -53,19 +53,19 @@ This repository provides:
 
 ## Relationship to Other AFI Repos
 
-| Repo | Purpose | Relationship to afi-econ-kit |
+| Repo | Purpose | Relationship to afi-econ |
 |------|---------|------------------------------|
-| **afi-token-finalized** | Smart contracts (AFIToken, emissions, governance) | afi-econ models inform contract parameters |
+| **afi-token** | Smart contracts (AFIToken, emissions, governance) | afi-econ models inform contract parameters |
 | **afi-core** | Protocol interfaces, signal lifecycle, validators | afi-econ simulates economic outcomes of core logic |
-| **afi-engine** | Signal processing engine (ElizaOS integration) | afi-econ models signal flow economics |
+| **afi-reactor** | Signal processing engine | afi-econ models signal flow economics |
 | **afi-math** | Pure mathematical functions (curves, decay, valuation) | afi-econ uses afi-math for calculations |
 
-**afi-econ-kit does NOT duplicate**:
+**afi-econ does NOT duplicate**:
 - Core protocol logic (lives in afi-core)
-- Smart contract implementation (lives in afi-token-finalized)
-- Signal processing (lives in afi-engine)
+- Smart contract implementation (lives in afi-token)
+- Signal processing (lives in afi-reactor)
 
-**afi-econ-kit DOES provide**:
+**afi-econ DOES provide**:
 - Economic scenario modeling
 - Parameter sensitivity analysis
 - Long-term simulation and forecasting
@@ -155,7 +155,7 @@ jupyter notebook notebooks/
 ## File Structure
 
 ```
-afi-econ-kit/
+afi-econ/
 ├── src/                          # TypeScript source
 │   ├── cli/                      # CLI entrypoint and commands
 │   ├── models/                   # Economic models (emissions, minting, rewards)
