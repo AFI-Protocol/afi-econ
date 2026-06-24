@@ -1,5 +1,7 @@
 # AFI Economics End-to-End Audit Report
 
+> **DEPRECATED / SUPERSEDED:** This document predates AFI Settlement v1 doctrine. It may describe v0 per-signal minting, ERC-1155 receipts, direct beneficiary payouts, stale ENS/Snapshot references, or missing vault architecture. See `afi-docs/specs/AFI_SETTLEMENT_V1_DOCTRINE.md` for canonical architecture.
+
 ## Summary
 
 This audit verifies the mathematical and economic integrity of the AFI Economics system
