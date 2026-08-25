@@ -1,4 +1,4 @@
-"""Test scores ingestion with BenchKit scores file."""
+"""Test scores ingestion with the synthetic merit-scores file (examples/merit_scores.synthetic.json)."""
 
 import json
 import subprocess
@@ -12,8 +12,8 @@ from afi_econ_kit.scenarios import run_monte_carlo_simulation
 def test_scores_ingestion_with_file():
     """Test simulation with --scores file produces expected changes."""
     # Load the test scores
-    scores_path = Path("tests/fixtures/scores_min.json")
-    assert scores_path.exists(), "Test scores fixture not found"
+    scores_path = Path("examples/merit_scores.synthetic.json")
+    assert scores_path.exists(), "Synthetic merit-scores example not found"
     
     with scores_path.open("r") as f:
         scores_data = json.load(f)
@@ -30,7 +30,7 @@ def test_scores_ingestion_with_file():
         "warnings": [],
         "path": str(scores_path.resolve()),
         "hash": compute_file_sha256(scores_path),
-        "benchkit_stamp": scores_data.get("stamp", None)
+        "merit_stamp": scores_data.get("stamp", None)
     }
     
     # Minimal config for fast test
@@ -73,12 +73,13 @@ def test_scores_ingestion_with_file():
             differences_found = True
             break
     
-    assert differences_found, "BenchKit scores should affect gauge allocation"
+    assert differences_found, "Merit scores should affect gauge allocation"
     
     # Check stamp includes bench_merit data
     stamp = result_with_scores["stamp"]
     assert stamp["scores_path"] == str(scores_path.resolve())
     assert stamp["bench_merit"] is not None
+    assert stamp["merit_stamp"]["source"] == "synthetic"
     assert stamp["bench_merit"]["reputation"] == 0.58
     assert stamp["bench_merit"]["poi"] == 0.55
     assert stamp["bench_merit"]["poinsight"] == 0.60
@@ -99,7 +100,7 @@ def test_cli_simulate_with_scores():
     """Test CLI simulate command with --scores parameter."""
     with tempfile.TemporaryDirectory() as tmpdir:
         tmpdir_path = Path(tmpdir)
-        scores_path = Path("tests/fixtures/scores_min.json")
+        scores_path = Path("examples/merit_scores.synthetic.json")
         
         # Run CLI command
         cmd = [
@@ -116,7 +117,7 @@ def test_cli_simulate_with_scores():
         
         # Check output contains expected messages
         assert str(scores_path.resolve()) in result.stdout, "Should echo absolute scores path"
-        assert "Using BenchKit scores:" in result.stdout, "Should print scores summary"
+        assert "Using merit scores (synthetic):" in result.stdout, "Should print scores summary"
         assert "rep=0.580" in result.stdout, "Should show reputation score"
         assert "poi=0.550" in result.stdout, "Should show poi score"
         assert "poinsight=0.600" in result.stdout, "Should show poinsight score"

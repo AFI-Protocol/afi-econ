@@ -159,7 +159,7 @@ class GaugeInput(StageInput):
     """Schema for gauge stage input."""
     receipts: List[ReceiptData] = Field(..., description="Receipt data")
     policy_allocation: Dict[str, float] = Field(..., description="Policy-based allocation")
-    merit_scores: Optional[Dict[str, float]] = Field(None, description="Merit scores from BenchKit")
+    merit_scores: Optional[Dict[str, float]] = Field(None, description="Merit scores (synthetic research inputs; the protocol source is the CAL-GOV analyst calibration record, not a scalar)")
 
 
 class GaugeOutput(StageOutput):

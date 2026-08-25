@@ -73,11 +73,11 @@ def _compute_bench_merit_multipliers(
     bench_merit: Dict[str, float],
     bench_merit_weights: Dict[str, Any]
 ) -> Dict[str, float]:
-    """Compute per-role merit multipliers from BenchKit scores.
+    """Compute per-role merit multipliers from merit scores (synthetic inputs).
 
     Args:
         roles: List of role names
-        bench_merit: BenchKit scores (reputation, poi, poinsight)
+        bench_merit: Merit scores (reputation, poi, poinsight) -- synthetic research inputs
         bench_merit_weights: Role mapping configuration
 
     Returns:
@@ -132,8 +132,8 @@ def allocation_gauge(
         caps: Caps configuration including per_role_max
         merit: Merit inputs for blending
         blend: Blend factor between policy (0.0) and merit (1.0)
-        bench_merit: BenchKit scores (reputation, poi, poinsight)
-        bench_merit_weights: Role mapping configuration for BenchKit scores
+        bench_merit: Merit scores (reputation, poi, poinsight) -- synthetic research inputs
+        bench_merit_weights: Role mapping configuration for merit scores
 
     Returns:
         Dictionary containing:
@@ -156,7 +156,7 @@ def allocation_gauge(
             merit_weight = weights[role] * (1.0 + merit_avg)
             raw_allocation[role] = (1 - blend) * weights[role] + blend * merit_weight
 
-    # Apply BenchKit merit multipliers if provided
+    # Apply merit multipliers if provided
     if bench_merit and bench_merit_weights:
         # Set default bench_merit_weights if not provided
         if bench_merit_weights is None:

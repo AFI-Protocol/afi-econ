@@ -13,7 +13,7 @@ This directory contains example data files and configurations for testing and de
 - `receipts.json` - Sample receipt data with participant activities
 - `payouts.json` - Sample payout data for index computation
 - `epoch_budget.json` - Sample AFI emissions budget data
-- `scores_min.json` - Minimal BenchKit scores for testing
+- `merit_scores.synthetic.json` - Synthetic merit scores for the `--scores` path (see "Merit scores (synthetic)" below)
 
 ### Integration Examples
 - `pipeline_demo.sh` - Complete end-to-end pipeline demonstration
@@ -34,18 +34,18 @@ afi-econ-kit simulate --config examples/config.yaml --outdir budget_sim \
   --budget examples/epoch_budget.json
 ```
 
-### 3. Simulation with BenchKit Integration
+### 3. Simulation with Merit Scores (synthetic)
 ```bash
-# Run simulation with merit scores
+# Run simulation with the synthetic merit scores
 afi-econ-kit simulate --config examples/config.yaml --outdir merit_sim \
-  --scores examples/scores_min.json
+  --scores examples/merit_scores.synthetic.json
 ```
 
 ### 4. Full Integration (Budget + Merit)
 ```bash
 # Run simulation with both budget and merit scores
 afi-econ-kit simulate --config examples/config.yaml --outdir full_sim \
-  --budget examples/epoch_budget.json --scores examples/scores_min.json
+  --budget examples/epoch_budget.json --scores examples/merit_scores.synthetic.json
 ```
 
 ### 5. AFI Index Computation
@@ -108,25 +108,26 @@ afi-econ-kit payouts --allocations stage_safety/safety_allocations.json \
 }
 ```
 
-### scores_min.json Format (BenchKit)
+### merit_scores.synthetic.json Format (merit scores, synthetic)
 ```json
 {
-  "participants": {
-    "user_001": {
-      "role": "reputation",
-      "total_score": 85.5,
-      "benchmark_scores": {
-        "latency": 90.0,
-        "throughput": 81.0
-      }
-    }
-  },
+  "reputation": {"score": 0.58},
+  "poi": {"score": 0.55},
+  "poinsight": {"score": 0.60},
+  "n": 20,
   "stamp": {
+    "source": "synthetic",
     "version": "0.1.0",
-    "utc_ts": "2024-01-01T12:00:00Z"
+    "utc_ts": "2026-08-24T00:00:00Z"
   }
 }
 ```
+
+`reputation.score` is required; `poi.score` and `poinsight.score` default to 0.5 when
+absent. Scores are clipped to [0, 1]. `n` is the row count behind the scores and `stamp`
+is passed through unchanged into the simulation's provenance stamp (as `merit_stamp`).
+These are synthetic research inputs -- see "Merit scores (synthetic)" below for what
+they are and are not.
 
 ## Expected Outputs
 
@@ -171,17 +172,23 @@ afi-econ-kit simulate --config config.yaml --outdir integrated_sim \
   --budget ../afi-emissions/budget_out/epoch_budget.json
 ```
 
-### With afi-benchkit
-```bash
-# Generate scores in afi-benchkit
-cd ../afi-benchkit
-afi-benchkit reputation --config config.yaml --out scores_out
+### Merit scores (synthetic)
 
-# Use scores in afi-econ-kit
-cd ../afi-econ-kit
+The `--scores` merit path takes a **synthetic** merit-scores file:
+
+```bash
 afi-econ-kit simulate --config config.yaml --outdir integrated_sim \
-  --scores ../afi-benchkit/scores_out/scores.json
+  --scores examples/merit_scores.synthetic.json
 ```
+
+These scores are research-plane inputs only. The protocol source of analyst merit is
+the CAL-GOV analyst calibration record (`afi.analyst-calibration.v1`) -- **not a
+scalar** -- and any conversion of it into a merit value is **CHAIN-GOV reserved**.
+afi-econ consumes no such value from the protocol; edit the synthetic file to explore
+how merit multipliers move gauge allocations. Proof-of-Intelligence (PoI) and
+Proof-of-Insight (PoInsight) remain reserved protocol reputation primitives
+(CONST-GOV D-CONST-5; CAL-GOV D-CAL-5); the `poi` / `poinsight` keys here are
+synthetic placeholders that stand in for no protocol value.
 
 ## Testing and Validation
 
