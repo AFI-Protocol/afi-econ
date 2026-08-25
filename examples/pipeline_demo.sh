@@ -30,7 +30,7 @@ echo ""
 echo "🏆 Step 3: Simulation with Merit Scores"
 echo "--------------------------------------"
 afi-econ-kit simulate --config config.yaml --outdir demo_pipeline_out/merit \
-  --scores tests/fixtures/scores_min.json
+  --scores examples/merit_scores.synthetic.json
 echo "✅ Merit integration complete"
 
 # Step 4: Full integration
@@ -38,7 +38,7 @@ echo ""
 echo "🔗 Step 4: Full Integration (Budget + Merit)"
 echo "-------------------------------------------"
 afi-econ-kit simulate --config config.yaml --outdir demo_pipeline_out/full \
-  --budget examples/epoch_budget.json --scores tests/fixtures/scores_min.json
+  --budget examples/epoch_budget.json --scores examples/merit_scores.synthetic.json
 echo "✅ Full integration complete"
 
 # Step 5: AFI Index computation

@@ -12,7 +12,9 @@ caps:
 
 policy_merit_blend: 0.5   # 50/50 policy vs. merit
 
-# BenchKit merit weights for role mapping
+# Merit weights for role mapping (applied to merit scores -- synthetic research inputs;
+# the protocol source is the CAL-GOV analyst calibration record, not a scalar, and any
+# merit conversion is CHAIN-GOV reserved)
 bench_merit_weights:
   producers:
     poinsight: 0.7

@@ -80,7 +80,7 @@ def create_stamp(seed: int, data_hash: str, config_path: str = "config.yaml",
         data_hash: Hash of input data
         config_path: Path to config file for hashing
         params_path: Path to params file for hashing
-        bench_data: Optional BenchKit data
+        bench_data: Optional merit-scores data (synthetic)
         budget_data: Optional AFI emissions budget data
 
     Returns:
@@ -102,7 +102,7 @@ def create_stamp(seed: int, data_hash: str, config_path: str = "config.yaml",
         "rng_seed_used": seed,
         "scores_path": bench_data['path'] if bench_data else None,
         "scores_hash": bench_data['hash'] if bench_data else None,
-        "benchkit_stamp": bench_data['benchkit_stamp'] if bench_data else None,
+        "merit_stamp": bench_data['merit_stamp'] if bench_data else None,
         "bench_merit": bench_data['scores'] if bench_data else None,
         "budget_path": budget_data['path'] if budget_data and budget_data['budget'] else None,
         "budget_hash": budget_data['hash'] if budget_data and budget_data['budget'] else None,
@@ -193,7 +193,7 @@ def run_epoch_simulation(
         config: Full configuration
         prev_state: Previous epoch state
         rng: Random number generator
-        bench_data: Optional BenchKit scores data
+        bench_data: Optional merit-scores data (synthetic)
 
     Returns:
         Tuple of (new_state, epoch_results)
@@ -278,7 +278,7 @@ def run_monte_carlo_simulation(config: Dict[str, Any], bench_data: Optional[Dict
 
     Args:
         config: Full configuration dictionary
-        bench_data: Optional BenchKit scores data
+        bench_data: Optional merit-scores data (synthetic)
         budget_data: Optional AFI emissions budget data
 
     Returns:

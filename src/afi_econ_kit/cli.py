@@ -265,8 +265,20 @@ def _load_econ_config(args: argparse.Namespace) -> Dict[str, Any]:
     return config
 
 
-def _load_benchkit_scores(scores_path: Optional[str]) -> Optional[Dict[str, Any]]:
-    """Load and validate BenchKit scores JSON file.
+MERIT_SCORES_HELP = (
+    "Merit scores JSON file (optional; synthetic -- see examples/merit_scores.synthetic.json). "
+    "The protocol source is the CAL-GOV analyst calibration record -- not a scalar -- "
+    "and any merit conversion is CHAIN-GOV reserved."
+)
+
+
+def _load_merit_scores(scores_path: Optional[str]) -> Optional[Dict[str, Any]]:
+    """Load and validate a merit-scores JSON file.
+
+    The scores are SYNTHETIC research inputs (see examples/merit_scores.synthetic.json).
+    The protocol source of analyst merit is the CAL-GOV analyst calibration record --
+    not a scalar -- and any conversion of it into a merit value is CHAIN-GOV reserved;
+    afi-econ consumes no such value from the protocol.
 
     Args:
         scores_path: Path to scores JSON file, or None
@@ -327,8 +339,8 @@ def _load_benchkit_scores(scores_path: Optional[str]) -> Optional[Dict[str, Any]
     from afi_econ_kit.scenarios import compute_file_sha256
     scores_hash = compute_file_sha256(scores_file)
 
-    # Extract BenchKit stamp if present (pass-through)
-    benchkit_stamp = data.get("stamp", None)
+    # Extract the scores file's own stamp if present (pass-through)
+    merit_stamp = data.get("stamp", None)
 
     return {
         "scores": bench_merit,
@@ -336,7 +348,7 @@ def _load_benchkit_scores(scores_path: Optional[str]) -> Optional[Dict[str, Any]
         "warnings": warnings,
         "path": str(scores_file.resolve()),
         "hash": scores_hash,
-        "benchkit_stamp": benchkit_stamp
+        "merit_stamp": merit_stamp
     }
 
 
@@ -391,8 +403,8 @@ def cmd_econ_simulate(args: argparse.Namespace) -> int:
     config = _load_econ_config(args)
     output_dir = _ensure_output_dir(args.outdir)
 
-    # Load BenchKit scores if provided
-    bench_data = _load_benchkit_scores(getattr(args, 'scores', None))
+    # Load merit scores (synthetic) if provided
+    bench_data = _load_merit_scores(getattr(args, 'scores', None))
 
     if bench_data:
         # Echo absolute path to scores file
@@ -401,7 +413,7 @@ def cmd_econ_simulate(args: argparse.Namespace) -> int:
         # Print summary line with hash
         scores = bench_data['scores']
         hash_short = bench_data['hash'][:8] if bench_data['hash'] != "none" else "none"
-        print(f"Using BenchKit scores: rep={scores['reputation']:.3f}, "
+        print(f"Using merit scores (synthetic): rep={scores['reputation']:.3f}, "
               f"poi={scores['poi']:.3f}, poinsight={scores['poinsight']:.3f} "
               f"(n={bench_data['n']}) hash={hash_short}")
 
@@ -447,8 +459,8 @@ def cmd_econ_replay(args: argparse.Namespace) -> int:
     config = _load_econ_config(args)
     output_dir = _ensure_output_dir(args.outdir)
 
-    # Load BenchKit scores if provided
-    bench_data = _load_benchkit_scores(getattr(args, 'scores', None))
+    # Load merit scores (synthetic) if provided
+    bench_data = _load_merit_scores(getattr(args, 'scores', None))
 
     if bench_data:
         # Echo absolute path to scores file
@@ -457,7 +469,7 @@ def cmd_econ_replay(args: argparse.Namespace) -> int:
         # Print summary line with hash
         scores = bench_data['scores']
         hash_short = bench_data['hash'][:8] if bench_data['hash'] != "none" else "none"
-        print(f"Using BenchKit scores: rep={scores['reputation']:.3f}, "
+        print(f"Using merit scores (synthetic): rep={scores['reputation']:.3f}, "
               f"poi={scores['poi']:.3f}, poinsight={scores['poinsight']:.3f} "
               f"(n={bench_data['n']}) hash={hash_short}")
 
@@ -668,7 +680,7 @@ def cmd_econ_gauge(args: argparse.Namespace) -> int:
     # Load scores if provided
     bench_data = None
     if hasattr(args, 'scores') and args.scores:
-        bench_data = _load_benchkit_scores(args.scores)
+        bench_data = _load_merit_scores(args.scores)
 
     # Load config
     config_path = Path(args.config)
@@ -682,7 +694,7 @@ def cmd_econ_gauge(args: argparse.Namespace) -> int:
     print(f"Running gauge allocation...")
     print(f"Receipts: {len(receipts_data)} records")
     if bench_data and bench_data['scores']:
-        print(f"BenchKit scores: {len(bench_data['scores'])} participants")
+        print(f"Merit scores (synthetic): {len(bench_data['scores'])} components")
 
     # Compute gauge shares
     gauge_results = compute_gauge_shares(receipts_data, config, bench_data)
@@ -873,7 +885,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser_simulate = subparsers.add_parser("simulate", help="Run economic Monte Carlo simulation")
     parser_simulate.add_argument("--config", type=Path, default=Path("config.yaml"))
     parser_simulate.add_argument("--outdir", type=str, required=True, help="Output directory")
-    parser_simulate.add_argument("--scores", type=str, help="BenchKit scores JSON file (optional)")
+    parser_simulate.add_argument("--scores", type=str, help=MERIT_SCORES_HELP)
     parser_simulate.add_argument("--budget", type=str, help="AFI emissions budget JSON file (optional)")
     parser_simulate.set_defaults(func=cmd_econ_simulate)
 
@@ -883,7 +895,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser_replay.add_argument("--credits", type=str, required=True, help="Credits CSV file")
     parser_replay.add_argument("--prev-state", type=str, required=True, help="Previous state JSON file")
     parser_replay.add_argument("--outdir", type=str, required=True, help="Output directory")
-    parser_replay.add_argument("--scores", type=str, help="BenchKit scores JSON file (optional)")
+    parser_replay.add_argument("--scores", type=str, help=MERIT_SCORES_HELP)
     parser_replay.add_argument("--budget", type=str, help="AFI emissions budget JSON file (optional)")
     parser_replay.set_defaults(func=cmd_econ_replay)
 
@@ -898,7 +910,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser_gauge = subparsers.add_parser("gauge", help="Run gauge allocation stage")
     parser_gauge.add_argument("--receipts", type=str, required=True, help="Receipts JSON file")
     parser_gauge.add_argument("--config", type=str, default="params/gauge_v0.yaml", help="Gauge config file")
-    parser_gauge.add_argument("--scores", type=str, help="BenchKit scores JSON file (optional)")
+    parser_gauge.add_argument("--scores", type=str, help=MERIT_SCORES_HELP)
     parser_gauge.add_argument("--outdir", type=str, required=True, help="Output directory")
     parser_gauge.set_defaults(func=cmd_econ_gauge)
 

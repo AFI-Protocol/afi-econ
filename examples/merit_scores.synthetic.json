@@ -1,0 +1,12 @@
+{
+  "reputation": {"score": 0.58},
+  "poi": {"score": 0.55},
+  "poinsight": {"score": 0.60},
+  "n": 20,
+  "stamp": {
+    "source": "synthetic",
+    "version": "0.1.0",
+    "utc_ts": "2026-08-24T00:00:00Z",
+    "note": "Synthetic research input for afi-econ's --scores merit path. The protocol source of analyst merit is the CAL-GOV analyst calibration record (afi.analyst-calibration.v1) -- not a scalar -- and any merit conversion is CHAIN-GOV reserved."
+  }
+}
